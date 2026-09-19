@@ -51,15 +51,15 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> findByEmail(String email){
         String sql= """
-                SELECT id,firstName,LastName,email,phone,password,role From users where email = ?
+                SELECT id,first_name,last_name,email,phone,password,role From users where email = ?
                 """;
         try (PreparedStatement statement=connection.prepareStatement(sql)){
              statement.setString(1,email);
             ResultSet resultSet=statement.executeQuery();
             if(resultSet.next()){
                 UUID id=resultSet.getObject(1,UUID.class);
-                String firstNAme=resultSet.getString("firstNAme");
-                String lastNAme=resultSet.getString("lastName");
+                String firstNAme=resultSet.getString("first_name");
+                String lastNAme=resultSet.getString("last_name");
                 String userEmail= resultSet.getString("email");
                 String phone = resultSet.getString("phone");
                 String password = resultSet.getString("password");

@@ -9,17 +9,10 @@ public class DatabaseConnection {
     private static volatile DatabaseConnection instance;
     private Connection connection;
 
-    private final String url =
-            "jdbc:postgresql://localhost:5433/hotel_db";
-
-    private final String user =
-            "postgres";
-
-    private final String password =
-            "mouawya1234";
-
+    private final String url = "jdbc:postgresql://localhost:5433/hotel_db";
+    private final String user = "postgres";
+    private final String password = "mouawya1234";
     private DatabaseConnection() {
-
         try {
             connection = DriverManager.getConnection(
                     url,
