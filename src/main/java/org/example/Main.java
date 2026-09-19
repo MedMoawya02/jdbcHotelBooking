@@ -6,6 +6,7 @@ import initializer.RoomInitializer;
 import model.*;
 import repository.impl.InMemoryReservationRepository;
 import repository.impl.InMemoryRoomRepository;
+import repository.jdbc.JdbcRoomRepository;
 import repository.jdbc.JdbcUserRepository;
 import service.AuthService;
 import service.ReservationService;
@@ -23,16 +24,16 @@ void main() throws Exception {
 
     // ---- Repositories ----
     JdbcUserRepository jdbcUserRepository = new JdbcUserRepository();
-    InMemoryRoomRepository roomRepository = new InMemoryRoomRepository();
+    JdbcRoomRepository jdbcRoomRepository = new JdbcRoomRepository();
     InMemoryReservationRepository reservationRepository = new InMemoryReservationRepository();
 
     // ---- Init ----
-    RoomInitializer.init(roomRepository);
+//    RoomInitializer.init(jdbcRoomRepository);
 
     // ---- Services ----
     AuthService authService = new AuthService(jdbcUserRepository);
-    RoomService roomService = new RoomService(roomRepository);
-    ReservationService reservationService = new ReservationService(reservationRepository, roomRepository);
+    RoomService roomService = new RoomService(jdbcRoomRepository);
+    ReservationService reservationService = new ReservationService(reservationRepository, jdbcRoomRepository);
 
     boolean running = true;
     while (running) {

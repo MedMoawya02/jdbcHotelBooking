@@ -49,4 +49,20 @@ public class Room {
             return false;
         }
     }
+    //setters
+    public void setId(UUID id){
+        this.id=id;
+    }
+    public void setRoomNumber(String roomNumber){
+        this.roomNumber=roomNumber;
+    }
+    public void setType(RoomType type){
+        this.type=type;
+    }
+    public void setCapacity(Integer capacity){
+        this.capacity=capacity;
+    }
+    public void setStatus(RoomStatus roomStatus){
+        this.status=roomStatus;
+    }
 }
