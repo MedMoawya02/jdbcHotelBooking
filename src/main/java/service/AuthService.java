@@ -15,7 +15,7 @@ public class AuthService {
     public AuthService(UserRepository userRepository){
         this.userRepository=userRepository;
     }
-    public boolean inscription(UUID id,String firstname,String lastName,String email,String phone,String password)throws Exception {
+    public boolean inscription(UUID id,String firstname,String lastName,String email,String phone,String password)throws EmailAlreadyExistsException,InvalidCredentialsException {
         if(firstname==null||firstname.isBlank()){
             throw new InvalidCredentialsException("Invalid name");
         }
@@ -38,7 +38,7 @@ public class AuthService {
         return true;
     }
     //connexion
-    public boolean connexion(String email,String password){
+    public User connexion(String email,String password){
         Optional<User> user=userRepository.findByEmail(email);
         /*
         if(user.isEmpty()){
@@ -46,9 +46,9 @@ public class AuthService {
         }
         return user.get().getPassword().equals(password);*/
         if(user.isPresent()&&user.get().getPassword().equals(password)){
-            return true;
+            return user.get();
         }
-        return false;
+        return null;
     }
 
     //edit profil
@@ -69,5 +69,9 @@ public class AuthService {
     //findall
     public List<User> getAllUsers(){
         return userRepository.findAll();
+    }
+
+    public User finById(UUID id){
+        return  userRepository.findById(id).orElse(null);
     }
 }

@@ -5,10 +5,7 @@ import model.Role;
 import model.User;
 import repository.UserRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,11 +76,49 @@ public class JdbcUserRepository implements UserRepository {
     }
     @Override
     public boolean existsByEmail(String email){
-        return false;
+        String sql= """
+                SELECT id,first_name,last_name,email,phone,password,role FROM users WHERE email=?
+                """;
+        try(PreparedStatement statement=connection.prepareStatement(sql)) {
+            statement.setString(1,email);
+            ResultSet resultSet=statement.executeQuery();
+            return resultSet.next();
+        }catch (SQLException e){
+            throw new RuntimeException(
+                    "Erreur lors de la vérification de l'email : "
+                            + e.getMessage(),
+                    e
+            );
+        }
     }
     @Override
     public List<User> findAll(){
-        return new ArrayList<>();
+        List<User> users=new ArrayList<>();
+        String sql= """
+                SELECT id,first_name,last_name,email,phone,password,role FROM users
+                """;
+        try (PreparedStatement statement= connection.prepareStatement(sql)){
+            ResultSet resultSet=statement.executeQuery();
+            while (resultSet.next()){
+                UUID id=resultSet.getObject("id",UUID.class);
+                String first_name=resultSet.getString("first_name");
+                String last_name=resultSet.getString("lastst_name");
+                String email=resultSet.getString("email");
+                String phone=resultSet.getString("phone");
+                String password=resultSet.getString("password");
+                Role role=Role.valueOf(resultSet.getString("role"));
+                User user=new User(id,first_name,last_name,email,phone,password);
+                user.setRole(role);
+                users.add(user);
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(
+                    "Erreur lors de la récupération des utilisateurs : "
+                            + e.getMessage(),
+                    e
+            );
+        }
+        return users;
     }
     @Override
     public void update(User user){}
