@@ -49,14 +49,7 @@ public class JdbcRoomRepository implements RoomRepository {
             statement.setString(1,roomNumber);
             ResultSet resultSet= statement.executeQuery();
             if(resultSet.next()){
-                UUID id=resultSet.getObject("id",UUID.class);
-                String room_number=resultSet.getString("room_number");
-                RoomType roomType=RoomType.valueOf(resultSet.getString("type"));
-                int capacity=resultSet.getInt("capacity");
-                BigDecimal price_per_night=resultSet.getBigDecimal("price_per_night");
-                RoomStatus roomStatus=RoomStatus.valueOf(resultSet.getString("status"));
-                Room room=new Room(id,room_number,roomType,capacity,price_per_night,roomStatus);
-                return Optional.of(room);
+                return Optional.of(mapRoom(resultSet));
             }
         }catch (SQLException e){
             throw new RuntimeException(
@@ -96,14 +89,7 @@ public class JdbcRoomRepository implements RoomRepository {
         try (PreparedStatement statement=connection.prepareStatement(sql)){
             ResultSet resultSet=statement.executeQuery();
             while (resultSet.next()){
-                UUID id=resultSet.getObject("id",UUID.class);
-                String room_number=resultSet.getString("room_number");
-                RoomType roomType=RoomType.valueOf(resultSet.getString("type"));
-                int capacity=resultSet.getInt("capacity");
-                BigDecimal price_per_night=resultSet.getBigDecimal("price_per_night");
-                RoomStatus roomStatus=RoomStatus.valueOf(resultSet.getString("status"));
-                Room room=new Room(id,room_number,roomType,capacity,price_per_night,roomStatus);
-                rooms.add(room);
+                rooms.add(mapRoom(resultSet));
             }
         }catch (SQLException e){
             throw new RuntimeException(
@@ -133,5 +119,15 @@ public class JdbcRoomRepository implements RoomRepository {
         }catch (SQLException e){
             throw new RuntimeException("Erreur delete room : " + e.getMessage(), e);
         }
+    }
+
+    private Room mapRoom(ResultSet resultSet)throws SQLException{
+        UUID id=resultSet.getObject("id",UUID.class);
+        String room_number=resultSet.getString("room_number");
+        RoomType roomType=RoomType.valueOf(resultSet.getString("type"));
+        int capacity=resultSet.getInt("capacity");
+        BigDecimal price_per_night=resultSet.getBigDecimal("price_per_night");
+        RoomStatus roomStatus=RoomStatus.valueOf(resultSet.getString("status"));
+        return new Room(id,room_number,roomType,capacity,price_per_night,roomStatus);
     }
 }
