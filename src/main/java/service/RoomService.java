@@ -15,6 +15,11 @@ public class RoomService {
     public RoomService(RoomRepository roomRepository){
         this.roomRepository=roomRepository;
     }
+
+    public void save(Room room){
+        roomRepository.save(room);
+    }
+
     public Room getRoomByNumber(String number)throws RoomNotFoundException {
         Optional<Room> room=roomRepository.findByRoomNumber(number);
         if(room.isEmpty()){

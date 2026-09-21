@@ -23,7 +23,23 @@ public class JdbcRoomRepository implements RoomRepository {
         this.connection= DatabaseConnection.getInstance().getConnection();
     }
     @Override
-    public void save(Room room){}
+    public void save(Room room){
+        String sql= """
+                   INSERT INTO rooms (id, room_number, type, capacity, price_per_night, status) VALUES(?,?,?,?,?,?)
+                """;
+        try(PreparedStatement statement=connection.prepareStatement(sql)){
+            statement.setObject(1,room.getId());
+            statement.setString(2,room.getRoomNumber());
+            statement.setString(3,room.getType().name());
+            statement.setInt(4,room.getCapacity());
+            statement.setBigDecimal(5,room.getPricePerNight());
+            statement.setString(6,room.getStatus().name());
+            statement.executeUpdate();
+        }catch (SQLException e){
+            throw new RuntimeException("Erreur save room : " + e.getMessage(), e);
+        }
+
+    }
     @Override
     public Optional<Room> findByRoomNumber(String roomNumber){
         String sql= """

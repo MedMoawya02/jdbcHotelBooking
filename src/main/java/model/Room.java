@@ -62,6 +62,9 @@ public class Room {
     public void setCapacity(Integer capacity){
         this.capacity=capacity;
     }
+    public void setPricePerNight(BigDecimal pricePerNight){
+        this.pricePerNight=pricePerNight;
+    }
     public void setStatus(RoomStatus roomStatus){
         this.status=roomStatus;
     }

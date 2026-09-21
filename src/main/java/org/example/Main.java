@@ -149,32 +149,31 @@ void adminMenu(Scanner scanner,
 
             case 2 -> {
                 System.out.println("--- Ajouter une chambre ---");
-//                try {
-//                    System.out.print("Numéro : ");
-//                    String num = scanner.nextLine();
-//                    System.out.print("Type (SIMPLE / DOUBLE / SUITE) : ");
-//                    RoomType type = RoomType.valueOf(scanner.nextLine().toUpperCase());
-//                    System.out.print("Capacité : ");
-//                    int capacity = scanner.nextInt();
-//                    scanner.nextLine();
-//                    System.out.print("Prix par nuit : ");
-//                    BigDecimal price = new BigDecimal(scanner.nextLine());
-//                    System.out.print("Statut (AVAILABLE / OCCUPIED) : ");
-//                    RoomStatus status = RoomStatus.valueOf(scanner.nextLine().toUpperCase());
-//
-//                    Room room = new Room();
-//                    room.setId(UUID.randomUUID());
-//                    room.setRoomNumber(num);
-//                    room.setType(type);
-//                    room.setCapacity(capacity);
-//                    room.setPricePerNight(price);
-//                    room.setStatus(status);
-//
-//                    roomService.save(room);
-//                    System.out.println("Chambre ajoutée !");
-//                } catch (Exception e) {
-//                    System.out.println("Erreur : " + e.getMessage());
-//                }
+                try {
+                    System.out.print("Numéro : ");
+                    String num = scanner.nextLine();
+                    System.out.print("Type (SINGLE / DOUBLE / SUITE) : ");
+                    RoomType type = RoomType.valueOf(scanner.nextLine().toUpperCase());
+                    System.out.print("Capacité : ");
+                    int capacity = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.print("Prix par nuit : ");
+                    BigDecimal price = new BigDecimal(scanner.nextLine());
+                    System.out.print("Statut (AVAILABLE / OCCUPIED) : ");
+                   RoomStatus status = RoomStatus.valueOf(scanner.nextLine().toUpperCase());
+                    Room room = new Room(
+                            UUID.randomUUID(),
+                            num,
+                            type,
+                            capacity,
+                            price,
+                            status
+                    );
+                    roomService.save(room);
+                    System.out.println("Chambre ajoutée !");
+                } catch (Exception e) {
+                    System.out.println("Erreur : " + e.getMessage());
+              }
             }
 
             case 3 -> {
