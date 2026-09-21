@@ -179,42 +179,45 @@ void adminMenu(Scanner scanner,
             case 3 -> {
                 System.out.print("Numéro de la chambre à modifier : ");
                 String num = scanner.nextLine();
-//                try {
-//                    Room room = roomService.getRoomByNumber(num);
-//
-//                    System.out.print("Nouveau type (" + room.getType() + ") : ");
-//                    String type = scanner.nextLine();
-//                    if (!type.isBlank()) room.setType(RoomType.valueOf(type.toUpperCase()));
-//
-//                    System.out.print("Nouvelle capacité (" + room.getCapacity() + ") : ");
-//                    String cap = scanner.nextLine();
-//                    if (!cap.isBlank()) room.setCapacity(Integer.parseInt(cap));
-//
-//                    System.out.print("Nouveau prix (" + room.getPricePerNight() + ") : ");
-//                    String price = scanner.nextLine();
-//                    if (!price.isBlank()) room.setPricePerNight(new BigDecimal(price));
-//
-//                    System.out.print("Nouveau statut (" + room.getStatus() + ") : ");
-//                    String status = scanner.nextLine();
-//                    if (!status.isBlank()) room.setStatus(RoomStatus.valueOf(status.toUpperCase()));
-//
-//                    roomService.update(room);
-//                    System.out.println("Chambre modifiée !");
-//                } catch (RoomNotFoundException e) {
-//                    System.out.println(e.getMessage());
-//                } catch (Exception e) {
-//                    System.out.println("Erreur : " + e.getMessage());
-//                }
+                try {
+                    Room room = roomService.getRoomByNumber(num);
+
+                    System.out.print("Nouveau type (" + room.getType() + ") : ");
+                    String type = scanner.nextLine();
+                    if (!type.isBlank()) room.setType(RoomType.valueOf(type.toUpperCase()));
+
+                    System.out.print("Nouvelle capacité (" + room.getCapacity() + ") : ");
+                    String cap = scanner.nextLine();
+                    if (!cap.isBlank()) room.setCapacity(Integer.parseInt(cap));
+
+                    System.out.print("Nouveau prix (" + room.getPricePerNight() + ") : ");
+                    String price = scanner.nextLine();
+                    if (!price.isBlank()) room.setPricePerNight(new BigDecimal(price));
+
+                    System.out.print("Nouveau statut (" + room.getStatus() + ") : ");
+                    String status = scanner.nextLine();
+                    if (!status.isBlank()) room.setStatus(RoomStatus.valueOf(status.toUpperCase()));
+
+                    if(roomService.update(room)){
+                    System.out.println("Chambre modifiée !");
+                    }else {
+                        System.out.println("chambre introuvable");
+                    }
+                } catch (RoomNotFoundException e) {
+                    System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Erreur : " + e.getMessage());
+                }
             }
 
             case 4 -> {
                 System.out.print("Numéro de la chambre à supprimer : ");
                 String num = scanner.nextLine();
-//                if (roomService.delete(num)) {
-//                    System.out.println("Chambre supprimée !");
-//                } else {
-//                    System.out.println("Chambre introuvable !");
-//                }
+                if (roomService.deleteRoom(num)) {
+                    System.out.println("Chambre supprimée !");
+                } else {
+                    System.out.println("Chambre introuvable !");
+                }
             }
 
             case 5 -> {

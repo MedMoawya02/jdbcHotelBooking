@@ -27,6 +27,11 @@ public class RoomService {
         }
         return room.get();
     }
+
+    public boolean update(Room room){
+        return roomRepository.update(room);
+    }
+
     public List<Room> getAllRooms(){
         return roomRepository.findAll();
     }
@@ -49,5 +54,8 @@ public class RoomService {
     }
     public List<Room> filtrerParPrice(BigDecimal maxPrice){
         return roomRepository.findByMaxPrice(maxPrice);
+    }
+    public boolean deleteRoom(String roomNumber){
+        return roomRepository.delete(roomNumber);
     }
 }

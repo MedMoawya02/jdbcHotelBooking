@@ -69,6 +69,25 @@ public class JdbcRoomRepository implements RoomRepository {
     }
 
     @Override
+    public boolean update(Room room){
+        String sql= """
+                    UPDATE rooms set type=?, capacity=?, price_per_night=?, status=? 
+                    WHERE room_number=?
+                """;
+        try (PreparedStatement statement=connection.prepareStatement(sql)){
+            statement.setString(1, room.getType().name());
+            statement.setInt(2, room.getCapacity());
+            statement.setBigDecimal(3, room.getPricePerNight());
+            statement.setString(4, room.getStatus().name());
+            statement.setString(5, room.getRoomNumber());   // WHERE
+            return statement.executeUpdate()>0 ;
+        }catch (SQLException e){
+            throw new RuntimeException("Erreur update room : " + e.getMessage(), e);
+
+        }
+    }
+
+    @Override
     public List<Room> findAll(){
         List<Room> rooms=new ArrayList<>();
         String sql= """
@@ -102,5 +121,17 @@ public class JdbcRoomRepository implements RoomRepository {
     @Override
     public List<Room> findByMaxPrice(BigDecimal maxPrice){
         return new ArrayList<>();
+    }
+    @Override
+    public boolean delete(String roomNumber){
+        String sql= """
+                    DELETE  FROM rooms WHERE room_number=?
+                """;
+        try(PreparedStatement statement=connection.prepareStatement(sql)) {
+            statement.setString(1,roomNumber);
+            return statement.executeUpdate()>0;
+        }catch (SQLException e){
+            throw new RuntimeException("Erreur delete room : " + e.getMessage(), e);
+        }
     }
 }

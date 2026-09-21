@@ -23,7 +23,10 @@ public class InMemoryRoomRepository implements RoomRepository {
         }
         return Optional.empty();
     }
-
+    @Override
+    public boolean update(Room room){
+        return false;
+    }
     @Override
     public  List<Room> findAll(){
       return new ArrayList<>(rooms.values());
@@ -38,5 +41,9 @@ public class InMemoryRoomRepository implements RoomRepository {
         return rooms.values().stream()
                 .filter(r->r.getPricePerNight().compareTo(maxPrice)<=0)
                 .toList();
+    }
+    @Override
+    public boolean delete(String roomNumber) {
+        return rooms.remove(roomNumber) != null;
     }
 }
