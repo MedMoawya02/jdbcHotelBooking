@@ -14,7 +14,7 @@ public  interface ReservationRepository {
     List<Reservation> findByUserId(UUID userId);
     List<Reservation> findByRoomNumber(String roomNumber);
     List<Reservation> findAll();
-    public void update(Reservation reservation);
+    public boolean update(Reservation reservation);
     public void annuler(Reservation reservation);
 
 }

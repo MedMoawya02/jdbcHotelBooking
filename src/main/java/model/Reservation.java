@@ -17,19 +17,51 @@ public class Reservation {
     private BigDecimal totalPrice;
     private ReservationStatus status;
     private LocalDateTime createdAt;
-    public Reservation(String reservationCode,UUID userId,String roomNumber,LocalDate checkIn,LocalDate checkOut,int numberOfGuests,long numberOfNights,BigDecimal totalPrice,ReservationStatus status,LocalDateTime createdAt){
-        this.id=UUID.randomUUID();
-        this.reservationCode=reservationCode;
-        this.userId=userId;
-        this.roomNumber=roomNumber;
-        this.checkIn=checkIn;
-        this.checkOut=checkOut;
-        this.numberOfGuests=numberOfGuests;
-        this.numberOfNights=numberOfNights;
-        this.totalPrice=totalPrice;
-        this.status=status;
-        this.createdAt=createdAt;
-
+    public Reservation(String reservationCode,
+                       UUID userId,
+                       String roomNumber,
+                       LocalDate checkIn,
+                       LocalDate checkOut,
+                       int numberOfGuests,
+                       long numberOfNights,
+                       BigDecimal totalPrice,
+                       ReservationStatus status,
+                       LocalDateTime createdAt) {
+        this.id = UUID.randomUUID();   // ⬅️ id auto
+        this.reservationCode = reservationCode;
+        this.userId = userId;
+        this.roomNumber = roomNumber;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.numberOfGuests = numberOfGuests;
+        this.numberOfNights = numberOfNights;
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.createdAt = createdAt;
+    }
+    // Constructeur 2 : lecture depuis la DB (id récupéré de la base)
+    public Reservation(UUID id,
+                       String reservationCode,
+                       UUID userId,
+                       String roomNumber,
+                       LocalDate checkIn,
+                       LocalDate checkOut,
+                       int numberOfGuests,
+                       long numberOfNights,
+                       BigDecimal totalPrice,
+                       ReservationStatus status,
+                       LocalDateTime createdAt) {
+        this.id = id;
+        this.reservationCode = reservationCode;
+        this.userId = userId;
+        this.roomNumber = roomNumber;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.numberOfGuests = numberOfGuests;
+        this.numberOfNights = numberOfNights;
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.createdAt = createdAt;
     }
     public UUID getId() {
         return id;
@@ -76,6 +108,11 @@ public class Reservation {
     }
 
     //setters
+
+    public void setReservationCode(String reservationCode) {
+        this.reservationCode = reservationCode;
+    }
+
     public void setRoomNumber(String roomNumber){
         this.roomNumber=roomNumber;
     }

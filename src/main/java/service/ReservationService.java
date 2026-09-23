@@ -6,7 +6,7 @@ import model.Reservation;
 import model.Room;
 import repository.ReservationRepository;
 import repository.RoomRepository;
-import repository.impl.InMemoryReservationRepository;
+//import repository.impl.InMemoryReservationRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -49,27 +49,27 @@ public class ReservationService {
     public List<Reservation> getAllReservationByUser(UUID id){
         return reservationRepository.findByUserId(id);
     }
+    //find by code
+    public Optional<Reservation> findByCode(String codeReservation){
+       return reservationRepository.findByCode(codeReservation);
+    }
     //update
-    public void update(String reservationCode, String roomNumber,
-                       LocalDate checkIn,
-                       LocalDate checkOut,
-                       int numberOfGuests,
-                       long numberOfNights,
-                       BigDecimal totalPrice){
-        Optional<Reservation> reservationOptional=reservationRepository.findByCode(reservationCode);
-        if(reservationCode.isEmpty()){
-            System.out.println("reservation introuvable");
-            return;
-        }
-        Reservation reservation=reservationOptional.get();
-        reservation.setRoomNumber(roomNumber);
-        reservation.setCheckIn(checkIn);
-        reservation.setCheckOut(checkOut);
-        reservation.setNumberOfGuests(numberOfGuests);
-        reservation.setNumberOfNights(numberOfNights);
-        reservation.setTotalPrice(totalPrice);
-        reservationRepository.update(reservation);
-        System.out.println("Réservation modifiée avec succès !");
+    public boolean update(Reservation reservation){
+            return reservationRepository.update(reservation);
+//        Optional<Reservation> reservationOptional=reservationRepository.findByCode(reservationCode);
+//        if(reservationCode.isEmpty()){
+//            System.out.println("reservation introuvable");
+//            return;
+//        }
+//        Reservation reservation=reservationOptional.get();
+//        reservation.setRoomNumber(roomNumber);
+//        reservation.setCheckIn(checkIn);
+//        reservation.setCheckOut(checkOut);
+//        reservation.setNumberOfGuests(numberOfGuests);
+//        reservation.setNumberOfNights(numberOfNights);
+//        reservation.setTotalPrice(totalPrice);
+//        reservationRepository.update(reservation);
+//        System.out.println("Réservation modifiée avec succès !");
     }
 
     //delete
