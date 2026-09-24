@@ -17,6 +17,7 @@ public class Reservation {
     private BigDecimal totalPrice;
     private ReservationStatus status;
     private LocalDateTime createdAt;
+
     public Reservation(String reservationCode,
                        UUID userId,
                        String roomNumber,
@@ -39,6 +40,7 @@ public class Reservation {
         this.status = status;
         this.createdAt = createdAt;
     }
+
     // Constructeur 2 : lecture depuis la DB (id récupéré de la base)
     public Reservation(UUID id,
                        String reservationCode,
@@ -63,6 +65,7 @@ public class Reservation {
         this.status = status;
         this.createdAt = createdAt;
     }
+
     public UUID getId() {
         return id;
     }
@@ -113,23 +116,28 @@ public class Reservation {
         this.reservationCode = reservationCode;
     }
 
-    public void setRoomNumber(String roomNumber){
-        this.roomNumber=roomNumber;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
-    public void setCheckIn(LocalDate checkIn){
-        this.checkIn=checkIn;
+
+    public void setCheckIn(LocalDate checkIn) {
+        this.checkIn = checkIn;
     }
-    public void setCheckOut(LocalDate checkOut){
-        this.checkOut=checkOut;
+
+    public void setCheckOut(LocalDate checkOut) {
+        this.checkOut = checkOut;
     }
-    public  void  setNumberOfGuests(int numberOfGuests){
-        this.numberOfGuests=numberOfGuests;
+
+    public void setNumberOfGuests(int numberOfGuests) {
+        this.numberOfGuests = numberOfGuests;
     }
-    public void setNumberOfNights(Long numberOfNights){
-        this.numberOfNights=numberOfNights;
+
+    public void setNumberOfNights(Long numberOfNights) {
+        this.numberOfNights = numberOfNights;
     }
-    public void setTotalPrice(BigDecimal totalPrice){
-        this.totalPrice=totalPrice;
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
 }

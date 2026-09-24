@@ -10,6 +10,7 @@ import repository.jdbc.JdbcReservationRepository;
 import repository.jdbc.JdbcRoomRepository;
 import repository.jdbc.JdbcUserRepository;
 import service.AuthService;
+import service.PricingService;
 import service.ReservationService;
 import service.RoomService;
 
@@ -35,6 +36,7 @@ void main() throws Exception {
     AuthService authService = new AuthService(jdbcUserRepository);
     RoomService roomService = new RoomService(jdbcRoomRepository);
     ReservationService reservationService = new ReservationService(reservationRepository, jdbcRoomRepository);
+    PricingService pricingService = new PricingService();
 
     boolean running = true;
     while (running) {
@@ -161,7 +163,7 @@ void adminMenu(Scanner scanner,
                     System.out.print("Prix par nuit : ");
                     BigDecimal price = new BigDecimal(scanner.nextLine());
                     System.out.print("Statut (AVAILABLE / OCCUPIED) : ");
-                   RoomStatus status = RoomStatus.valueOf(scanner.nextLine().toUpperCase());
+                    RoomStatus status = RoomStatus.valueOf(scanner.nextLine().toUpperCase());
                     Room room = new Room(
                             UUID.randomUUID(),
                             num,
@@ -174,7 +176,7 @@ void adminMenu(Scanner scanner,
                     System.out.println("Chambre ajoutée !");
                 } catch (Exception e) {
                     System.out.println("Erreur : " + e.getMessage());
-              }
+                }
             }
 
             case 3 -> {
@@ -199,9 +201,9 @@ void adminMenu(Scanner scanner,
                     String status = scanner.nextLine();
                     if (!status.isBlank()) room.setStatus(RoomStatus.valueOf(status.toUpperCase()));
 
-                    if(roomService.update(room)){
-                    System.out.println("Chambre modifiée !");
-                    }else {
+                    if (roomService.update(room)) {
+                        System.out.println("Chambre modifiée !");
+                    } else {
                         System.out.println("chambre introuvable");
                     }
                 } catch (RoomNotFoundException e) {
@@ -251,6 +253,7 @@ void userMenu(Scanner scanner,
               RoomService roomService,
               ReservationService reservationService,
               User currentUser) {
+    PricingService pricingService = new PricingService();
     boolean loggedIn = true;
     while (loggedIn) {
         System.out.println("\n===== MENU UTILISATEUR =====");
@@ -356,8 +359,14 @@ void userMenu(Scanner scanner,
 
                     long numberOfNights = java.time.temporal.ChronoUnit.DAYS
                             .between(checkIn, checkOut);
-                    BigDecimal totalPrice = room.getPricePerNight()
-                            .multiply(BigDecimal.valueOf(numberOfNights));
+//                    BigDecimal totalPrice = room.getPricePerNight()
+//                            .multiply(BigDecimal.valueOf(numberOfNights));
+                    BigDecimal totalPrice = pricingService.computeTotalPrice(
+                            room,
+                            checkIn,
+                            checkOut,
+                            LocalDateTime.now()
+                    );
 
                     Reservation reservation = new Reservation(
                             reservationCode,
@@ -404,12 +413,12 @@ void userMenu(Scanner scanner,
                 System.out.println("--- Modifier une réservation ---");
                 System.out.print("Code de réservation : ");
                 String code = scanner.nextLine();
-                Optional<Reservation> reservationExsit=reservationService.findByCode(code);
+                Optional<Reservation> reservationExsit = reservationService.findByCode(code);
                 if (reservationExsit.isEmpty()) {
                     System.out.println("Aucune réservation avec le code : " + code);
                     break;
                 }
-                Reservation existing=reservationExsit.get();
+                Reservation existing = reservationExsit.get();
                 System.out.print("Nouveau numéro de chambre : ");
                 String rNumber = scanner.nextLine();
 
@@ -436,7 +445,7 @@ void userMenu(Scanner scanner,
                     existing.setTotalPrice(newTotalPrice);
                     boolean ok = reservationService.update(existing);
                     if (ok) System.out.println("Réservation modifiée !");
-                    else    System.out.println("Échec de la modification");
+                    else System.out.println("Échec de la modification");
                 } catch (RoomNotFoundException e) {
                     System.out.println(e.getMessage());
                 }
